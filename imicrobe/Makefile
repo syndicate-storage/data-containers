@@ -6,7 +6,7 @@ DATASET_NAME ?= imicrobe
 
 DOCKER_ARGS = --build-arg MS_URL=$(MS_URL) --build-arg USER_NAME=$(USER_NAME) --build-arg VOLUME_NAME=$(VOLUME_NAME) --build-arg GATEWAY_NAME=$(GATEWAY_NAME) --build-arg DATASET_NAME=$(DATASET_NAME)
 
-.PHONY: all build run
+.PHONY: all build run push
 
 all: run
 
@@ -29,7 +29,10 @@ syndicate: anaconda
 	-@rm -rf ../containers/cert
 
 build: syndicate
-	
 
 run: syndicate
 	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged data-containers-$(DATASET_NAME)
+
+push: build
+	docker tag data-containers-$(DATASET_NAME) syndicatestorage/imicrobe-anaconda
+	docker push syndicatestorage/imicrobe-anaconda
