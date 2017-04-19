@@ -1,0 +1,66 @@
+# Data-containers Anaconda
+#
+# VERSION	1.0
+
+FROM	data-containers-base
+MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
+
+##############################################
+# Setup Anaconda
+##############################################
+RUN wget https://repo.continuum.io/archive/Anaconda3-4.3.1-Linux-x86_64.sh
+RUN bash ./Anaconda3-4.3.1-Linux-x86_64.sh -b && \
+    rm Anaconda3-4.3.1-Linux-x86_64.sh
+ENV ANACONDA_HOME /home/$USER/anaconda3
+ENV ANACONDA_BIN_HOME $ANACONDA_HOME/bin
+
+##############################################
+# Setup R
+##############################################
+USER root
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    fonts-dejavu \
+    gfortran \
+    gcc \
+    libxrender1 \
+    inkscape
+
+COPY start_jupyter_notebook.sh $HOME
+RUN chown $USER:$USER $HOME/start_jupyter_notebook.sh
+
+USER $USER
+    
+RUN $ANACONDA_BIN_HOME/conda config --add channels r && \
+    $ANACONDA_BIN_HOME/conda install --quiet --yes \
+        'r-base=3.3.2' \
+        'r-irkernel=0.7*' \
+        'r-plyr=1.8*' \
+        'r-devtools=1.12*' \
+        'r-tidyverse=1.0*' \
+        'r-shiny=0.14*' \
+        'r-rmarkdown=1.2*' \
+        'r-forecast=7.3*' \
+        'r-rsqlite=1.1*' \
+        'r-reshape2=1.4*' \
+        'r-nycflights13=0.2*' \
+        'r-caret=6.0*' \
+        'r-rcurl=1.95*' \
+        'r-crayon=1.3*' \
+        'r-randomforest=4.6*' && \
+    $ANACONDA_BIN_HOME/conda clean -tipsy
+
+ENV PATH $PATH:$ANACONDA_BIN_HOME
+
+##############################################
+# Setup R packages
+##############################################
+USER root
+ADD Rprofile $HOME/.Rprofile
+ADD install_r_packages.r $HOME/
+RUN chmod 777 $HOME/install_r_packages.r
+
+USER $USER
+RUN $HOME/install_r_packages.r
+RUN rm $HOME/install_r_packages.r
