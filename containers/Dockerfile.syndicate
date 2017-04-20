@@ -48,7 +48,7 @@ ENV DATASET_NAME $DATASET_NAME
 # Copy Syndicate mount script and run
 ##############################################
 RUN mkdir /opt/private
-COPY cert/$USER_NAME /opt/private/
+COPY cert/$USER_NAME.pkey /opt/private/
 RUN chown $USER:$USER -R /opt/private/
 
 ##############################################

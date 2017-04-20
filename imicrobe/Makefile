@@ -17,7 +17,7 @@ syndicate: base
 	$(eval NAME := data-containers-$(DATASET_NAME))
 	$(eval DOCKERFILE := ../containers/Dockerfile.syndicate)
 	-@mkdir ../containers/cert/
-	@cp $(USER_NAME) ../containers/cert/
+	@cp $(USER_NAME).pkey ../containers/cert/
 	@docker inspect -f '{{.Id}}' $(NAME) 2> /dev/null ; if [ $$? -ne 0 ] ; then docker build -f $(DOCKERFILE) -t $(NAME) $(DOCKER_ARGS) ../containers ; fi
 	-@rm -rf ../containers/cert
 
