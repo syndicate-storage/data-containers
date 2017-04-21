@@ -5,27 +5,27 @@ GATEWAY_NAME ?= imicrobe_anonymous
 DATASET_NAME ?= imicrobe
 
 DOCKER_ARGS = --build-arg MS_URL=$(MS_URL) --build-arg USER_NAME=$(USER_NAME) --build-arg VOLUME_NAME=$(VOLUME_NAME) --build-arg GATEWAY_NAME=$(GATEWAY_NAME) --build-arg DATASET_NAME=$(DATASET_NAME)
+BUILD_FLAG ?=
+
+NAME = data-containers-$(DATASET_NAME)
+DOCKERFILE = ../containers/Dockerfile.dataset
 
 .PHONY: all build run push
 
 all: run
 
 base:
-	$(MAKE) -C ../containers build
+	$(MAKE) -C ../containers build BUILD_FLAG=$(BUILD_FLAG)
 
-syndicate: base
-	$(eval NAME := data-containers-$(DATASET_NAME))
-	$(eval DOCKERFILE := ../containers/Dockerfile.syndicate)
+build: base
 	-@mkdir ../containers/cert/
 	@cp $(USER_NAME).pkey ../containers/cert/
-	@docker inspect -f '{{.Id}}' $(NAME) 2> /dev/null ; if [ $$? -ne 0 ] ; then docker build -f $(DOCKERFILE) -t $(NAME) $(DOCKER_ARGS) ../containers ; fi
+	@docker inspect -f '{{.Id}}' $(NAME) 2> /dev/null ; if [ $$? -ne 0 ] ; then docker build $(BUILD_FLAG) -f $(DOCKERFILE) -t $(NAME) $(DOCKER_ARGS) ../containers ; fi
 	-@rm -rf ../containers/cert
 
-build: syndicate
-
-run: syndicate
+run: build
 	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged data-containers-$(DATASET_NAME)
 
 push: build
-	docker tag data-containers-$(DATASET_NAME) syndicatestorage/imicrobe-anaconda
-	docker push syndicatestorage/imicrobe-anaconda
+	docker tag data-containers-$(DATASET_NAME) syndicatestorage/$(DATASET_NAME)-anaconda
+	docker push syndicatestorage/$(DATASET_NAME)-anaconda

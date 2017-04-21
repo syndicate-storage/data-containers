@@ -2,19 +2,38 @@
 #
 # VERSION	1.0
 
-FROM	data-containers-anaconda
+FROM	ubuntu:14.04
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
+
+##############################################
+# Setup environment
+##############################################
+ENV LD_LIBRARY_PATH /usr/local/lib
+
+##############################################
+# Setup a Syndicate account
+##############################################
+ENV USER syndicate
+ENV HOME /home/$USER
+
+RUN useradd $USER && echo 'syndicate:syndicate' | chpasswd && \
+    echo "syndicate ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    mkdir /home/$USER && \
+    chown -R $USER:$USER $HOME
+
+WORKDIR $HOME
 
 ##############################################
 # Setup Syndicate
 ##############################################
-USER root
-
 ENV APT_KEY butler_opencloud_cs_arizona_edu_pub.gpg
 
 # Prep apt to be able to download over https
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --force-yes\
-    apt-transport-https
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    apt-get install -y --force-yes\
+    apt-transport-https wget curl unzip python-pip python-dev build-essential ssh fuse && \
+    rm -rf /var/lib/apt/lists/* && \
+    usermod -aG fuse $USER
 
 # Copy over and trust https cert
 COPY butler.crt /usr/local/share/ca-certificates
@@ -26,39 +45,20 @@ RUN apt-key add /tmp/$APT_KEY
 
 RUN echo "deb https://butler.opencloud.cs.arizona.edu/repos/release/syndicate syndicate main" > /etc/apt/sources.list.d/butler.list
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --force-yes\
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    apt-get install -y --force-yes\
     syndicate-core \
     syndicate-ug-tools \
     syndicatefs \
-    python-psutil
-
-ARG MS_URL
-ARG USER_NAME
-ARG VOLUME_NAME
-ARG GATEWAY_NAME
-ARG DATASET_NAME
-
-ENV MS_URL $MS_URL
-ENV USER_NAME $USER_NAME
-ENV VOLUME_NAME $VOLUME_NAME
-ENV GATEWAY_NAME $GATEWAY_NAME
-ENV DATASET_NAME $DATASET_NAME
+    python-psutil && \
+    rm -rf /var/lib/apt/lists/*
 
 ##############################################
-# Copy Syndicate mount script and run
+# Copy Syndicate mount scripts
 ##############################################
-RUN mkdir /opt/private
-COPY cert/$USER_NAME.pkey /opt/private/
-RUN chown $USER:$USER -R /opt/private/
-
-##############################################
-# Copy Syndicate mount script and run
-##############################################
-COPY mount_syndicatefs.sh /usr/bin/
-RUN chmod 755 /usr/bin/mount_syndicatefs.sh
 COPY waitfusemount.py /usr/bin/
 RUN chmod 755 /usr/bin/waitfusemount.py
+COPY mount_syndicatefs.sh /usr/bin/
+RUN chmod 755 /usr/bin/mount_syndicatefs.sh
 
 USER $USER
-
-CMD mount_syndicatefs.sh $MS_URL $USER_NAME $VOLUME_NAME $GATEWAY_NAME $DATASET_NAME

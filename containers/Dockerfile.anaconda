@@ -2,7 +2,7 @@
 #
 # VERSION	1.0
 
-FROM	data-containers-base
+FROM	data-containers-syndicate
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 
 ##############################################
@@ -25,7 +25,8 @@ RUN apt-get update && \
     gfortran \
     gcc \
     libxrender1 \
-    inkscape
+    inkscape && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY start_jupyter_notebook.sh $HOME
 RUN chown $USER:$USER $HOME/start_jupyter_notebook.sh
@@ -57,10 +58,11 @@ ENV PATH $PATH:$ANACONDA_BIN_HOME
 # Setup R packages
 ##############################################
 USER root
+
 ADD Rprofile $HOME/.Rprofile
 ADD install_r_packages.r $HOME/
 RUN chmod 777 $HOME/install_r_packages.r
 
 USER $USER
-RUN $HOME/install_r_packages.r
-RUN rm $HOME/install_r_packages.r
+RUN $HOME/install_r_packages.r && \
+    rm $HOME/install_r_packages.r
