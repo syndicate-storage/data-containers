@@ -6,27 +6,26 @@ FROM	data-containers-syndicate
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 
 ##############################################
-# Setup Anaconda
+# Setup Anaconda and R
 ##############################################
-RUN wget https://repo.continuum.io/archive/Anaconda3-4.3.1-Linux-x86_64.sh
-RUN bash ./Anaconda3-4.3.1-Linux-x86_64.sh -b && \
-    rm Anaconda3-4.3.1-Linux-x86_64.sh
+USER root
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    apt-get install -y --force-yes --no-install-recommends \
+    wget make \
+    fonts-dejavu gfortran gcc libxrender1 inkscape && \
+    apt-get clean autoclean && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt /var/lib/cache /var/lib/log
+
+USER $USER
 ENV ANACONDA_HOME /home/$USER/anaconda3
 ENV ANACONDA_BIN_HOME $ANACONDA_HOME/bin
 
-##############################################
-# Setup R
-##############################################
-USER root
+RUN wget https://repo.continuum.io/archive/Anaconda3-4.3.1-Linux-x86_64.sh && \
+    bash ./Anaconda3-4.3.1-Linux-x86_64.sh -b && \
+    rm Anaconda3-4.3.1-Linux-x86_64.sh
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    fonts-dejavu \
-    gfortran \
-    gcc \
-    libxrender1 \
-    inkscape && \
-    rm -rf /var/lib/apt/lists/*
+USER root
 
 COPY start_jupyter_notebook.sh $HOME
 RUN chown $USER:$USER $HOME/start_jupyter_notebook.sh
