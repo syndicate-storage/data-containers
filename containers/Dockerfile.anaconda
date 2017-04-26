@@ -10,7 +10,7 @@ MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 ##############################################
 USER root
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y --force-yes --no-install-recommends \
+    apt-get install -y --allow-unauthenticated --no-install-recommends \
     wget make \
     fonts-dejavu gfortran gcc libxrender1 inkscape && \
     apt-get clean autoclean && \
