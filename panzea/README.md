@@ -10,5 +10,5 @@ make
 Run from pre-built image
 ------------------------
 ```
-docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged syndicatestorage/panzea-anaconda
+docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged syndicatestorage/panzea-syndicate
 ```

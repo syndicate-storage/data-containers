@@ -1,8 +1,8 @@
-# Data-containers Dataset
+# Data-containers Datasets
 #
 # VERSION	1.0
 
-FROM	data-containers-anaconda
+FROM	syndicatestorage/syndicate-base
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 
 ARG MS_URL
