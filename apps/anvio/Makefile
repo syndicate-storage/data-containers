@@ -1,16 +1,16 @@
-DATASET_NAME ?= 
 BUILD_FLAG ?=
-
-IMAGE_NAME = $(DATASET_NAME)-anvio
+IMAGE_NAME = syndicate-anvio
 DOCKERFILE = ./Dockerfile
 
-.PHONY: all build
+.PHONY: all build run push
 
-all: build
+all: run
 
 build:
-	sed "s/%%BASE_IMAGE%%/$(DATASET_NAME)-syndicate/" Dockerfile.template > Dockerfile
 	@docker inspect -f '{{.Id}}' $(IMAGE_NAME) 2> /dev/null ; if [ $$? -ne 0 ] ; then docker build $(BUILD_FLAG) -f $(DOCKERFILE) -t $(IMAGE_NAME) . ; fi
+
+run: build
+	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged $(IMAGE_NAME)
 
 push: build
 	docker tag $(IMAGE_NAME) syndicatestorage/$(IMAGE_NAME)

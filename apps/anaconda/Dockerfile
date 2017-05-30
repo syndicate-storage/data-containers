@@ -1,8 +1,8 @@
-# Data-containers Dataset with Anaconda
+# Anaconda
 #
 # VERSION	1.0
 
-FROM	%%BASE_IMAGE%%
+FROM	syndicatestorage/syndicate-base
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 
 ##############################################

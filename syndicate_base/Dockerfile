@@ -1,4 +1,4 @@
-# Data-containers Syndicate-base
+# Syndicate-base
 #
 # VERSION	1.0
 
