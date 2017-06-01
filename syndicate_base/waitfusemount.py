@@ -10,12 +10,12 @@ import time
 
 def exit_success(msg):
     sys.stderr.write("SUCCESS: %s\n" % msg)
-    sys.stderr.write("Exit with code 0\n")
+    # sys.stderr.write("Exit with code 0\n")
     sys.exit(0)
 
 def exit_fail(msg):
     sys.stderr.write("FAIL: %s\n" % msg)
-    sys.stderr.write("Exit with code 1\n")
+    # sys.stderr.write("Exit with code 1\n")
     sys.exit(1)
 
 def get_processes(name):
@@ -62,9 +62,9 @@ while True:
     # check mount
     matching_mounts = get_mounts(app_name, mount_path)
     if len(matching_mounts) != 0:
-        for m in matching_mounts:
-            print m
-        exit_success("fuse is successfully mounted - %s / %s" % (app_name, mount_path))
+        # for m in matching_mounts:
+        #     print m
+        exit_success("fuse is successfully mounted - %s : %s" % (app_name, mount_path))
 
     time.sleep(1)
     tick += 1

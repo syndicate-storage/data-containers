@@ -2,7 +2,7 @@
 #
 # VERSION	1.0
 
-FROM	syndicatestorage/syndicate-anvio
+FROM	syndicatestorage/syndicate-jupyter
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 
 ARG MS_URL

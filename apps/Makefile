@@ -1,6 +1,6 @@
 BUILD_FLAG ?=
 
-APPS = "anaconda" "anvio"
+APPS = "anvio" "anaconda" "jupyter"
 
 .PHONY: all build push
 
