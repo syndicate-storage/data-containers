@@ -1,6 +1,6 @@
 APP_NAME ?= base
 IMAGE_BASE ?= syndicate-$(APP_NAME)
-MS_URL ?= demo1.opencloud.cs.arizona.edu:28080
+MS_URL ?= http://demo1.opencloud.cs.arizona.edu:28080
 USER_NAME ?= dc_anonymous_user@opencloud.us
 VOLUME_NAME ?= imicrobe
 GATEWAY_NAME ?= imicrobe_anonymous

@@ -13,7 +13,7 @@ SYNDICATEFS_DATASET_MOUNT_DIR=/opt/dataset/${DATASET_NAME}
 
 # REGISTER SYNDICATE
 echo "Registering Syndicate..."
-syndicate -d --trust_public_key setup ${USER} ${PRIVATE_MOUNT_DIR}/${USER}.pkey http://${MS_HOST}
+syndicate -d --trust_public_key setup ${USER} ${PRIVATE_MOUNT_DIR}/${USER}.pkey ${MS_HOST}
 syndicate -d reload_user_cert ${USER}
 syndicate -d reload_volume_cert ${DATASET_VOLUME}
 syndicate -d reload_gateway_cert ${READER_UG_NAME}
