@@ -22,7 +22,7 @@ def get_processes(name):
     matching_processes = []
     for p in psutil.process_iter():
         try:
-            if p.name == name:
+            if p.name() == name:
                 matching_processes.append(p)
         except psutil.NoSuchProcess:
             pass
