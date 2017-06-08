@@ -12,6 +12,7 @@ SYNDICATE_CONFIG=~/.syndicate_anonymous/${DATASET_NAME}/syndicate.conf
 SYNDICATE_CMD="syndicate -d -c ${SYNDICATE_CONFIG}"
 SYNDICATEFS_CMD="syndicatefs -d3 -c ${SYNDICATE_CONFIG}"
 
+
 # REGISTER SYNDICATE
 echo "Registering Syndicate..."
 ${SYNDICATE_CMD} --trust_public_key setup ${USER_NAME} ${PRIVATE_MOUNT_DIR}/${USER_NAME}.pkey ${MS_HOST}
@@ -31,7 +32,7 @@ sudo mkdir -p ${SYNDICATEFS_DATASET_MOUNT_DIR}
 sudo chown -R syndicate:syndicate ${SYNDICATEFS_DATASET_MOUNT_DIR}
 sudo chmod -R 744 ${SYNDICATEFS_DATASET_MOUNT_DIR}
 
-${SYNDICATEFS_CMD} -f -u ANONYMOUS -v ${VOLUME_NAME} -g ${UG_NAME} ${SYNDICATEFS_DATASET_MOUNT_DIR} &> /tmp/syndicate_${DATASET_NAME}.log&
+${SYNDICATEFS_CMD} -f -u ANONYMOUS -v ${VOLUME_NAME} -g ${UG_NAME} ${SYNDICATEFS_DATASET_MOUNT_DIR} &> /tmp/syndicate_${VOLUME_NAME}.log&
 waitfusemount.py syndicatefs ${SYNDICATEFS_DATASET_MOUNT_DIR} 30
 if [ $? -ne 0 ]; then
     echo "Mounting an anonymous UG... Failed"
@@ -41,5 +42,3 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 echo "Mounting an anonymous UG... Done!"
-
-/bin/bash

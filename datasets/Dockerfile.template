@@ -29,4 +29,4 @@ RUN chown $USER:$USER -R /opt/private/
 
 USER $USER
 
-CMD init_syndicate.sh
+CMD bash -C '/usr/bin/init_syndicate.sh';'bash'
