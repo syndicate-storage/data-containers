@@ -10,10 +10,10 @@ USER_NAME=${USER_ARR[0]}
 
 PRIVATE_MOUNT_DIR=/opt/private
 SYNDICATEFS_DATASET_MOUNT_DIR=/opt/dataset/${DATASET_NAME}
-SYNDICATE_CONFIG_DIR=~/.syndicate_anonymous/${DATASET_NAME}/syndicate.conf
+SYNDICATE_CONFIG=~/.syndicate_anonymous/${DATASET_NAME}/syndicate.conf
 
-SYNDICATE_CMD="syndicate -d -c ${SYNDICATE_CONFIG_DIR}"
-SYNDICATEFS_CMD="syndicatefs -d3 -c ${SYNDICATE_CONFIG_DIR}"
+SYNDICATE_CMD="syndicate -d -c ${SYNDICATE_CONFIG}"
+SYNDICATEFS_CMD="syndicatefs -d3 -c ${SYNDICATE_CONFIG}"
 
 # REGISTER SYNDICATE
 echo "Registering Syndicate..."
