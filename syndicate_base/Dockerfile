@@ -61,8 +61,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 # Copy Syndicate mount scripts
 ##############################################
 COPY waitfusemount.py /usr/bin/
-COPY mount_syndicatefs.sh /usr/bin/
+COPY mount_anonymous_syndicatefs.sh /usr/bin/
 RUN chmod 755 /usr/bin/waitfusemount.py && \
-    chmod 755 /usr/bin/mount_syndicatefs.sh
+    chmod 755 /usr/bin/mount_anonymous_syndicatefs.sh
 
 USER $USER

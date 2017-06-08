@@ -27,10 +27,10 @@ build: sed
 	@cp $(USER_NAME).pkey $(CERT_PATH)
 	@docker inspect -f '{{.Id}}' $(IMAGE_NAME) 2> /dev/null ; if [ $$? -ne 0 ] ; then docker build $(BUILD_FLAG) -f $(DOCKERFILE) -t $(IMAGE_NAME) $(DOCKER_ARGS) .. ; fi
 	-@rm -rf $(CERT_PATH)
+	docker tag $(IMAGE_NAME) syndicatestorage/$(IMAGE_NAME)
 
 run: build
 	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged $(IMAGE_NAME)
 
 push: build
-	docker tag $(IMAGE_NAME) syndicatestorage/$(IMAGE_NAME)
 	docker push syndicatestorage/$(IMAGE_NAME)

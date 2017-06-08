@@ -7,6 +7,7 @@ import sys
 import psutil
 import os
 import time
+import inspect
 
 
 def exit_success(msg):
@@ -25,8 +26,12 @@ def get_processes(name):
     matching_processes = []
     for p in psutil.process_iter():
         try:
-            if p.name() == name:
-                matching_processes.append(p)
+            if inspect.isfunction(p.name):
+                if p.name() == name:
+                    matching_processes.append(p)
+            else:
+                if p.name == name:
+                    matching_processes.append(p)
         except psutil.NoSuchProcess:
             pass
     return matching_processes
