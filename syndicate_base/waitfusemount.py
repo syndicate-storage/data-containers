@@ -26,7 +26,7 @@ def get_processes(name):
     matching_processes = []
     for p in psutil.process_iter():
         try:
-            if inspect.isfunction(p.name):
+            if inspect.ismethod(p.name):
                 if p.name() == name:
                     matching_processes.append(p)
             else:
