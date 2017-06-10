@@ -26,4 +26,4 @@ USER $USER
 RUN $HOME/install_r_packages.r && \
     rm $HOME/install_r_packages.r
 
-CMD start_jupyter_notebook.sh
+CMD bash -C '/usr/bin/init_syndicate.sh';'start_jupyter_notebook.sh'

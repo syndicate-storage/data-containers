@@ -16,17 +16,12 @@ ARG DATASET_NAME
 ##############################################
 USER root
 
-RUN echo "#! /bin/bash\n" > /usr/bin/init_syndicate.sh && \
-    chmod 777 /usr/bin/init_syndicate.sh
-
 RUN echo "#! /bin/bash\nmount_anonymous_syndicatefs.sh $MS_URL $USER_NAME $VOLUME_NAME $GATEWAY_NAME $DATASET_NAME" > /usr/bin/mount_$DATASET_NAME.sh && \
     chmod 755 /usr/bin/mount_$DATASET_NAME.sh && \
     echo "mount_$DATASET_NAME.sh\n" >> /usr/bin/init_syndicate.sh
 
-RUN mkdir /opt/private
+RUN mkdir -p /opt/private
 COPY cert/$USER_NAME.pkey /opt/private/
 RUN chown $USER:$USER -R /opt/private/
 
 USER $USER
-
-CMD bash -C '/usr/bin/init_syndicate.sh';'bash'

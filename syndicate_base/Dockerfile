@@ -62,7 +62,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 ##############################################
 COPY waitfusemount.py /usr/bin/
 COPY mount_anonymous_syndicatefs.sh /usr/bin/
+COPY init_syndicate.sh /usr/bin/
+
 RUN chmod 755 /usr/bin/waitfusemount.py && \
-    chmod 755 /usr/bin/mount_anonymous_syndicatefs.sh
+    chmod 755 /usr/bin/mount_anonymous_syndicatefs.sh && \
+    chmod 777 /usr/bin/init_syndicate.sh
 
 USER $USER
+
+CMD bash -C '/usr/bin/init_syndicate.sh';'bash'
