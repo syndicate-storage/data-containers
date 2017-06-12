@@ -1,6 +1,6 @@
 APP_NAME ?= base
 IMAGE_BASE ?= syndicate-$(APP_NAME)
-MS_URL ?= http://syndicate-ms-datasets.appspot.com:80
+MS_URL ?= http://syndicate-ms-datasets-prod.appspot.com:80
 USER_NAME ?= dc_anonymous_user@opencloud.us
 VOLUME_NAME ?= pov
 GATEWAY_NAME ?= pov_anonymous

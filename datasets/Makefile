@@ -1,6 +1,7 @@
 BUILD_FLAG ?=
 
-DATASETS = "pov" "digbio" "imicrobe" "ivirus" "panzea"
+DATASETS = "pov" "imicrobe" "ivirus"
+#"digbio" "panzea"
 APPS = "base" "anvio" "anaconda" "jupyter" "mash"
 
 .PHONY: all build push
