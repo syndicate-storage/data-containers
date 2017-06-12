@@ -27,3 +27,8 @@ RUN $HOME/install_r_packages.r && \
     rm $HOME/install_r_packages.r
 
 CMD bash -C '/usr/bin/init_syndicate.sh';'start_jupyter_notebook.sh'
+
+USER root
+COPY README.md $HOME/
+RUN chown $USER:$USER $HOME/README.md
+USER $USER

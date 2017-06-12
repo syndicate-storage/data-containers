@@ -47,3 +47,8 @@ RUN $ANACONDA_BIN_HOME/conda config --add channels r && \
     $ANACONDA_BIN_HOME/conda clean -tipsy
 
 ENV PATH $PATH:$ANACONDA_BIN_HOME
+
+USER root
+COPY README.md $HOME/
+RUN chown $USER:$USER $HOME/README.md
+USER $USER

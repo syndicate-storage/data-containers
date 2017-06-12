@@ -36,4 +36,6 @@ WORKDIR $HOME
 
 RUN rm -rf mash
 
+COPY README.md $HOME/
+RUN chown $USER:$USER $HOME/README.md
 USER $USER

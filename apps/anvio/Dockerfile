@@ -59,3 +59,7 @@ RUN rm -rf hmmer-3.1b2 hmmer-3.1b2.tar.gz
 
 # install anvio
 RUN pip install anvio
+
+COPY README.md $HOME/
+RUN chown $USER:$USER $HOME/README.md
+USER $USER
