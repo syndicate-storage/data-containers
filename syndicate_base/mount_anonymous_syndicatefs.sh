@@ -38,7 +38,7 @@ if [ $? -ne 0 ]; then
     echo "Mounting an anonymous UG... Failed"
     echo "> This can be due to an insufficient permission to run FUSE"
     echo "> If you are in a docker container, rerun the container with following command line options: "
-    echo "> docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged <docker-image>"
+    echo "> docker run -ti --privileged <docker-image>"
     exit 1
 fi
 echo "Mounting an anonymous UG... Done!"

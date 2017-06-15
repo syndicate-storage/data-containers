@@ -14,7 +14,7 @@ From (https://www.continuum.io/)[https://www.continuum.io/]
 
 To exectue the image, use following command.
 ```
-docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged <image_name>
+docker run -ti --privileged <image_name>
 ```
 
 Public dataset is automatically mounted on `/opt/dataset` once the image 

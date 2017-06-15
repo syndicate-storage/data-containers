@@ -11,8 +11,10 @@ ADD start_jupyter_notebook.sh /usr/bin/
 RUN chmod 777 /usr/bin/start_jupyter_notebook.sh && \
     chown $USER:$USER /usr/bin/start_jupyter_notebook.sh
 
-RUN mkdir ${HOME}/jupyter-notebooks && \
-    chown $USER:$USER ${HOME}/jupyter-notebooks
+ENV JUPYTER_NOTEBOOK_HOME /opt/jupyter-notebooks
+
+ADD jupyter-notebooks $JUPYTER_NOTEBOOK_HOME
+RUN chown $USER:$USER $JUPYTER_NOTEBOOK_HOME
 
 
 ##############################################

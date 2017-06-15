@@ -4,7 +4,7 @@ This image contains Mash, a bioinformatics tool. Use the following command to
 execute the image.
 
 ```
-docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged <image_name>
+docker run -ti --privileged <image_name>
 ```
 
 Public dataset is automatically mounted on `/opt/dataset` once the image 
