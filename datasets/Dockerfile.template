@@ -20,6 +20,9 @@ RUN echo "#! /bin/bash\nmount_anonymous_syndicatefs.sh $MS_URL $USER_NAME $VOLUM
     chmod 755 /usr/bin/mount_$DATASET_NAME.sh && \
     echo "mount_$DATASET_NAME.sh\n" >> /usr/bin/init_syndicate.sh
 
+COPY verify_data.sh /usr/bin/
+RUN chmod 755 /usr/bin/verify_data.sh
+
 RUN mkdir -p /opt/private
 COPY cert/$USER_NAME.pkey /opt/private/
 RUN chown $USER:$USER -R /opt/private/

@@ -14,6 +14,8 @@ DOCKERTEMPLATEFILE = ../Dockerfile.template
 DOCKERFILE = ../Dockerfile
 CERT_PATH = ../cert
 
+SHA1SUM_LIST_EXPECTED = 6c8e57a2c08e058468b1506cca2769b169538159
+
 .PHONY: all clean build rebuild run push repush
 
 all: run
@@ -45,3 +47,7 @@ push: build
 
 repush: clean push
 	
+
+test: build
+	@docker inspect -f '{{.Id}}' $(IMAGE_NAME)_test 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rm $(IMAGE_NAME)_test ; fi
+	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged --name $(IMAGE_NAME)_test $(IMAGE_NAME) bash -c "/usr/bin/init_syndicate.sh && /usr/bin/verify_data.sh $(DATASET_NAME) $(SHA1SUM_LIST_EXPECTED)"

@@ -4,7 +4,7 @@ DATASETS = "pov" "imicrobe" "ivirus" "eht2013"
 #"digbio" "panzea"
 APPS = "base" "anvio" "anaconda" "jupyter" "mash"
 
-.PHONY: all clean build rebuild push repush
+.PHONY: all clean build rebuild push repush test
 
 all: build
 
@@ -42,3 +42,8 @@ repush:
 			$(MAKE) -C ./$(d) repush APP_NAME=$(a) BUILD_FLAG=$(BUILD_FLAG) \
 		;)\
 	)
+
+test:
+	$(foreach d, $(DATASETS), \
+		$(MAKE) -C ./$(d) test APP_NAME=base BUILD_FLAG=$(BUILD_FLAG) \
+	&&) echo "Done!"
