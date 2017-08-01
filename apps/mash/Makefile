@@ -20,7 +20,7 @@ rebuild: clean build
 	
 
 run: build
-	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged $(IMAGE_NAME)
+	@docker run -ti --privileged $(IMAGE_NAME)
 
 push: build
 	@docker push syndicatestorage/$(IMAGE_NAME)

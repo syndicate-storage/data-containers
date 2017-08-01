@@ -40,7 +40,7 @@ rebuild: clean build
 	
 
 run: build
-	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged $(IMAGE_NAME)
+	@docker run -ti --privileged $(IMAGE_NAME)
 
 push: build
 	@docker push syndicatestorage/$(IMAGE_NAME)
@@ -50,4 +50,4 @@ repush: clean push
 
 test: build
 	@docker inspect -f '{{.Id}}' $(IMAGE_NAME)_test 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rm $(IMAGE_NAME)_test ; fi
-	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged --name $(IMAGE_NAME)_test $(IMAGE_NAME) bash -c "/usr/bin/init_syndicate.sh && /usr/bin/verify_data.sh $(DATASET_NAME) $(SHA1SUM_LIST_EXPECTED)"
+	@docker run -ti --privileged --name $(IMAGE_NAME)_test $(IMAGE_NAME) bash -c "/usr/bin/init_syndicate.sh && /usr/bin/verify_data.sh $(DATASET_NAME) $(SHA1SUM_LIST_EXPECTED)"

@@ -15,6 +15,7 @@ DOCKERFILE = ../Dockerfile
 CERT_PATH = ../cert
 
 SHA1SUM_LIST_EXPECTED = 91c9eb0d031f2543fccdad5c9c69cb6fd1d8427a
+SHA1SUM_DATA_EXPECTED = f107d179d219d2179952f9b2f426667980ecfa0b
 
 .PHONY: all clean build rebuild run push repush
 
@@ -40,7 +41,7 @@ rebuild: clean build
 	
 
 run: build
-	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged $(IMAGE_NAME)
+	@docker run -ti --privileged $(IMAGE_NAME)
 
 push: build
 	@docker push syndicatestorage/$(IMAGE_NAME)
@@ -50,4 +51,4 @@ repush: clean push
 
 test: build
 	@docker inspect -f '{{.Id}}' $(IMAGE_NAME)_test 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rm $(IMAGE_NAME)_test ; fi
-	@docker run -ti --cap-add SYS_ADMIN --device /dev/fuse --privileged --name $(IMAGE_NAME)_test $(IMAGE_NAME) bash -c "/usr/bin/init_syndicate.sh && /usr/bin/verify_data.sh $(DATASET_NAME) $(SHA1SUM_LIST_EXPECTED)"
+	@docker run -ti --privileged --name $(IMAGE_NAME)_test $(IMAGE_NAME) bash -c "/usr/bin/init_syndicate.sh && /usr/bin/verify_data.sh $(DATASET_NAME) $(SHA1SUM_LIST_EXPECTED) $(SHA1SUM_DATA_EXPECTED)"
