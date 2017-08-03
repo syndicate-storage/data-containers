@@ -1,6 +1,6 @@
 BUILD_FLAG ?= --squash
 
-DATASETS = "pov" "imicrobe" "ivirus" "eht2013" "genbank"
+DATASETS = "pov" "imicrobe" "ivirus" "eht2013" "genbank" "refseq"
 #"digbio" "panzea"
 APPS = "base" "anvio" "anaconda" "jupyter" "mash"
 
