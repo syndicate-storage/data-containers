@@ -1,0 +1,54 @@
+APP_NAME ?= base
+IMAGE_BASE ?= syndicate-$(APP_NAME)
+MS_URL ?= http://syndicate-ms-datasets-prod.appspot.com:80
+USER_NAME ?= dc_anonymous_user@opencloud.us
+VOLUME_NAME ?= nanograv9y
+GATEWAY_NAME ?= nanograv9y_anonymous
+DATASET_NAME ?= nanograv9y
+
+DOCKER_ARGS = --build-arg MS_URL=$(MS_URL) --build-arg USER_NAME=$(USER_NAME) --build-arg VOLUME_NAME=$(VOLUME_NAME) --build-arg GATEWAY_NAME=$(GATEWAY_NAME) --build-arg DATASET_NAME=$(DATASET_NAME)
+BUILD_FLAG ?= --squash
+
+IMAGE_NAME = $(DATASET_NAME)-$(APP_NAME)
+DOCKERTEMPLATEFILE = ../Dockerfile.template
+DOCKERFILE = ../Dockerfile
+CERT_PATH = ../cert
+
+SHA1SUM_LIST_EXPECTED = 91c9eb0d031f2543fccdad5c9c69cb6fd1d8427a
+SHA1SUM_DATA_EXPECTED = f107d179d219d2179952f9b2f426667980ecfa0b
+
+.PHONY: all clean build rebuild run push repush
+
+all: run
+
+sed:
+	@sed "s/%%IMAGE_BASE%%/$(IMAGE_BASE)/" $(DOCKERTEMPLATEFILE) > $(DOCKERFILE)
+
+clean:
+	@CONTAINERS="$(shell docker ps -a -q --filter=ancestor=$(IMAGE_NAME) | awk '{print $$1}')" ; if [ ! -z "$$CONTAINERS" ] ; then docker rm $$CONTAINERS ; fi
+	@docker inspect -f '{{.Id}}' syndicatestorage/$(IMAGE_NAME) 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rmi -f syndicatestorage/$(IMAGE_NAME) ; fi
+	@docker inspect -f '{{.Id}}' $(IMAGE_NAME) 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rmi -f $(IMAGE_NAME) ; fi
+	@DANGLINGS="$(shell docker images -f "dangling=true" -q)" ; if [ ! -z "$$DANGLINGS" ] ; then docker rmi $$DANGLINGS ; fi
+
+build: sed
+	-@mkdir $(CERT_PATH)
+	@cp $(USER_NAME).pkey $(CERT_PATH)
+	@docker inspect -f '{{.Id}}' $(IMAGE_NAME) 2> /dev/null ; if [ $$? -ne 0 ] ; then docker build $(BUILD_FLAG) -f $(DOCKERFILE) -t $(IMAGE_NAME) $(DOCKER_ARGS) .. ; fi
+	-@rm -rf $(CERT_PATH)
+	@docker tag $(IMAGE_NAME) syndicatestorage/$(IMAGE_NAME)
+
+rebuild: clean build
+	
+
+run: build
+	@docker run -ti --privileged $(IMAGE_NAME)
+
+push: build
+	@docker push syndicatestorage/$(IMAGE_NAME)
+
+repush: clean push
+	
+
+test: build
+	@docker inspect -f '{{.Id}}' $(IMAGE_NAME)_test 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rm $(IMAGE_NAME)_test ; fi
+	@docker run -ti --privileged --name $(IMAGE_NAME)_test $(IMAGE_NAME) bash -c "/usr/bin/init_syndicate.sh && /usr/bin/verify_data.sh $(DATASET_NAME) $(SHA1SUM_LIST_EXPECTED) $(SHA1SUM_DATA_EXPECTED)"
