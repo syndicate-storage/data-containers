@@ -2,9 +2,9 @@ APP_NAME ?= base
 IMAGE_BASE ?= syndicate-$(APP_NAME)
 MS_URL ?= http://syndicate-ms-datasets-prod.appspot.com:80
 USER_NAME ?= dc_anonymous_user@opencloud.us
-VOLUME_NAME ?= uhslcfast
-GATEWAY_NAME ?= uhslcfast_anonymous
-DATASET_NAME ?= uhslcfast
+VOLUME_NAME ?= uhslc
+GATEWAY_NAME ?= uhslc_anonymous
+DATASET_NAME ?= uhslc
 
 DOCKER_ARGS = --build-arg MS_URL=$(MS_URL) --build-arg USER_NAME=$(USER_NAME) --build-arg VOLUME_NAME=$(VOLUME_NAME) --build-arg GATEWAY_NAME=$(GATEWAY_NAME) --build-arg DATASET_NAME=$(DATASET_NAME)
 BUILD_FLAG ?= --squash
