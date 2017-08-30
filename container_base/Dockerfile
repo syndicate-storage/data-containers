@@ -1,4 +1,4 @@
-# Syndicate-base
+# container-base
 #
 # VERSION	1.0
 
@@ -46,28 +46,9 @@ RUN update-ca-certificates && \
     apt-key add /tmp/$APT_KEY && \
     echo "deb https://butler.opencloud.cs.arizona.edu/repos/release/syndicate syndicate main" > /etc/apt/sources.list.d/butler.list
 
-# Install Syndicate
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y --allow-unauthenticated --no-install-recommends \
-    syndicate-core \
-    syndicate-ug-tools \
-    syndicatefs \
-    python-psutil && \
-    apt-get clean autoclean && \
-    apt-get autoremove -y && \
-    rm -rf /var/lib/apt /var/lib/cache /var/lib/log
-
-##############################################
-# Copy Syndicate mount scripts
-##############################################
-COPY waitfusemount.py /usr/bin/
-COPY mount_anonymous_syndicatefs.sh /usr/bin/
-COPY init_syndicate.sh /usr/bin/
-
-RUN chmod 755 /usr/bin/waitfusemount.py && \
-    chmod 755 /usr/bin/mount_anonymous_syndicatefs.sh && \
-    chmod 777 /usr/bin/init_syndicate.sh
+COPY init_container.sh /usr/bin/
+RUN chmod 777 /usr/bin/init_container.sh
 
 USER $USER
 
-CMD bash -C '/usr/bin/init_syndicate.sh';'bash'
+CMD bash -C '/usr/bin/init_container.sh';'bash'

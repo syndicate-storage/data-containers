@@ -2,7 +2,7 @@
 #
 # VERSION	1.0
 
-FROM	syndicatestorage/syndicate-base
+FROM	syndicatestorage/syndicate-container-base
 MAINTAINER	Illyoung Choi <iychoi@email.arizona.edu>
 
 ##############################################

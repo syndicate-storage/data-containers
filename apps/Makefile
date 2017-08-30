@@ -1,6 +1,6 @@
 BUILD_FLAG ?= --squash
 
-APPS = "anvio" "anaconda" "jupyter" "mash"
+APPS = "base" "anvio" "anaconda" "jupyter" "mash"
 
 .PHONY: all clean build rebuild push repush
 
