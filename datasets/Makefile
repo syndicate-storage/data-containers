@@ -1,7 +1,7 @@
 BUILD_FLAG ?= --squash
 
-DATASETS = "imicrobe" "ivirus" "uhslc" "refseq" "nanograv9y"
-#"digbio" "panzea" 
+DATASETS = "imicrobe" "ivirus" "uhslc" "refseq" "nanograv9y" "eht2013"
+#"digbio" "panzea"
 APPS = "base" "anvio" "anaconda" "jupyter" "mash"
 
 .PHONY: all clean build rebuild push repush test
