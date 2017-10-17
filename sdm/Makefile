@@ -7,6 +7,7 @@ APPS = "base" "anvio" "anaconda" "jupyter" "mash"
 all: build
 
 clean:
+	docker rmi syndicatestorage/sdm
 	$(foreach a, $(APPS), \
 		CONTAINERS="$(shell docker ps -a -q --filter=ancestor=sdm-$(a) | awk '{print $$1}')" ; if [ ! -z "$$CONTAINERS" ] ; then docker rm $$CONTAINERS ; fi ; \
 		docker inspect -f '{{.Id}}' syndicatestorage/sdm-$(a) 2> /dev/null ; if [ $$? -eq 0 ] ; then docker rmi -f syndicatestorage/sdm-$(a) ; fi ; \
@@ -21,6 +22,7 @@ build:
 		docker tag sdm-$(a) syndicatestorage/sdm-$(a) ; \
 		rm -f ./Dockerfile ; \
 	)
+	docker tag sdm-base syndicatestorage/sdm
 
 rebuild: clean build
 
@@ -28,5 +30,6 @@ push: build
 	$(foreach a, $(APPS), \
 		docker push syndicatestorage/sdm-$(a) \
 	;)
+	docker push syndicatestorage/sdm
 
 repush: clean push
