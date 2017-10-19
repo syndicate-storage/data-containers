@@ -29,6 +29,6 @@ RUN chown $USER:$USER $HOME/.sdm/sdm.conf
 COPY detect_cdn.py /usr/bin/
 RUN chmod 777 /usr/bin/detect_cdn.py
 
-RUN echo "detect_cdn.py /etc/uglwcdriver.conf\n" >> /usr/bin/init_container.sh
+RUN echo "sudo detect_cdn.py /etc/uglwcdriver.conf\n" >> /usr/bin/init_container.sh
 
 USER $USER
